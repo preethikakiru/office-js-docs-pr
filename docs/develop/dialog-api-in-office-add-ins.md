@@ -1,7 +1,7 @@
 ---
 title: Use the Office dialog API in your Office Add-ins
 description: Learn the basics of creating a dialog box in an Office Add-in.
-ms.date: 01/22/2022
+ms.date: 04/30/2022
 ms.localizationpriority: medium
 ---
 
@@ -29,11 +29,14 @@ The following image shows an example of a dialog box.
 
 Note that the dialog box always opens in the center of the screen. The user can move and resize it. The window is *nonmodal*--a user can continue to interact with both the document in the Office application and with the page in the task pane, if there is one.
 
+> [!TIP]
+> There's a *modal* dialog API available in preview. It shouldn't be used in production add-ins, but we encourage you to experiment with it. For details about it, see [Office modal dialog API](modal-dialog.md). 
+
 ## Open a dialog box from a host page
 
 The Office JavaScript APIs include a [Dialog](/javascript/api/office/office.dialog) object and two functions in the [Office.context.ui namespace](/javascript/api/office/office.ui).
 
-To open a dialog box, your code, typically a page in a task pane, calls the [displayDialogAsync](/javascript/api/office/office.ui) method and passes to it the URL of the resource that you want to open. The page on which this method is called is known as the "host page". For example, if you call this method in script on index.html in a task pane, then index.html is the host page of the dialog box that the method opens.
+To open a dialog box, your code, typically a page in a task pane, calls the [displayDialogAsync](/javascript/api/office/office.ui#office-office-ui-displaydialogasync-member(1)) method and passes to it the URL of the resource that you want to open. The page on which this method is called is known as the "host page". For example, if you call this method in script on index.html in a task pane, then index.html is the host page of the dialog box that the method opens.
 
 The resource that is opened in the dialog box is usually a page, but it can be a controller method in an MVC application, a route, a web service method, or any other resource. In this article, 'page' or 'website' refers to the resource in the dialog box. The following code is a simple example.
 
@@ -376,6 +379,9 @@ For example, your code could use the [Office.onReady or Office.initialize method
 > "My trusted domain"="https://www.contoso.com"
 > "Another trusted domain"="https://fabrikam.com"
 > ```
+
+> [!TIP]
+> If the child dialog is the [preview modal dialog](modal-dialog.md), then a call of `messageChild` can't be triggered by user interaction with the add-in's task pane or add-in commands, because user interaction is blocked while the modal dialog is open. So, if your dialog use case requires messaging from the parent to the dialog, you will nearly always need to use the non-modal dialog API. However, calling `Office.context.ui.messageParent` in the dialog triggers the `DialogMessageReceived` event in the parent, and code in the handler for that event can call `messageChild`. 
 
 ## Close the dialog box
 
