@@ -43,7 +43,11 @@ The APIs and manifest markup described in this article require that the add-in's
 
 ## Set the default state to disabled
 
-By default, any Add-in Command is enabled when the Office application launches. If you want a custom button or menu item to be disabled when the Office application launches, you specify this in the manifest. Just add an [Enabled](/javascript/api/manifest/enabled) element (with the value `false`) immediately *below* (not inside) the [Action](/javascript/api/manifest/action) element in the declaration of the control. The following shows the basic structure.
+By default, any Add-in Command is enabled when the Office application launches. If you want a custom button or menu item to be disabled when the Office application launches, you specify this in the manifest. Open the appropriate tab below depending on which type of manifest you are using.
+
+# [XML Manifest](#tab/xmlmanifest)
+
+Just add an [Enabled](/javascript/api/manifest/enabled) element (with the value `false`) immediately *below* (not inside) the [Action](/javascript/api/manifest/action) element in the declaration of the control. The following shows the basic structure.
 
 ```xml
 <OfficeApp ...>
@@ -66,6 +70,38 @@ By default, any Add-in Command is enabled when the Office application launches. 
 ...
 </OfficeApp>
 ```
+
+# [Teams Manifest (developer preview)](#tab/jsonmanifest)
+
+Just add an “enabled” property (with the value `false`) to the “control” object. The following shows the basic structure.
+
+```json
+{
+
+    "extension": {
+        …
+        "ribbons": [
+            {
+               …
+                "tabs": [
+                    {
+                       …
+                          "groups": [
+                               {
+                                …
+                                "controls": [
+                                    {
+                                        …
+                                        "enabled": false,
+                                        …
+                                    },
+                                    …
+                                ]
+    …
+}
+```
+
+---
 
 ## Change the state programmatically
 
