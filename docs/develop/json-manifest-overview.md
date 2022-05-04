@@ -9,15 +9,15 @@ ms.localizationpriority: high
 
 Microsoft is making a number of improvements to the Microsoft 365 developer platform. These improvements will provide more consistency in the development, deployment, installation, and administration of all types of extensions of Microsoft 365, including Office Add-ins. These changes will not break existing add-ins. 
 
-Two of the most important improvements are:
+Two important improvements are:
 
 - It will be possible to surface a single web app as multiple types of Microsoft 365 extensions. For example a web app can be both an Office Add-in and a custom tab in Teams.
 - All types of Microsoft 365 extensions will use the same manifest format (JSON) and schema. It will be based on the current Teams manifest schema. In support of the first bullet, it will be possible to specify multiple types of extensions in the manifest.  
 
 The new manifest is available for preview and we encourage experienced add-in developers to experiment with it. It should not be used in production add-ins. During the early preview period, the following limitations apply:
 
-- The preview version of the Teams manifest only supports Outlook add-ins and only on subscription Office for Windows. We're working on extending support to Excel, PowerPoint, and Word.
-- It is not yet possible to combine an add-in with Teams apps, such as a custom Teams tab, or any other Microsoft 365 extension types. We're working on this too.
+- The preview version of the Teams manifest only supports Outlook add-ins and only on subscription Office for Windows. We're working on extending support to add-ins for Excel, PowerPoint, and Word.
+- It is not yet possible to side-laod a combined manifest that contains both an Outlook Add-in and Teams apps, such as a Teams personal app, wtihin Outlook.  We're working on this too.
 
 > [!TIP]
 
@@ -83,7 +83,7 @@ The base manifest properties specify characteristics of the add-in that *any* ty
 |"developer"| Identifies the developer of the add-in. | **ProviderName** | |
 |"localizationInfo"| Configures the default locale and other supported locales. | **DefaultLocale** and **Override** | |
 |"webApplicationInfo"| Identifies the add-in's web app as it is known in Azure Active Directory. | **WebApplicationInfo** | In the current XML manifest, the **WebApplicationInfo** element is inside **VersionOverrides**, not the base manifest. |
-|"authorization"| Identifies any Microsoft Graph permissions that the add-in needs. | **WebApplicationInfo** | See comment in preceding row. ||
+|"authorization"| Identifies any Microsoft Graph permissions that the add-in needs. | **Permissions** |  ||
 
 The **Hosts**, **Requirements**, and **ExtendedOverrides** elements are part of the base manifest in the current XML manifest. But concepts and purposes associated with these elements are configured inside the "extension" property of the preview JSON manifest. 
 
@@ -101,9 +101,7 @@ The following table shows a mapping of some high level child properties of the "
 | "requirements.capabilities" | Identifies the requirement sets that the add-in needs to be installable. | **Requirements** and **Sets** | |
 | "requirements.scopes" | Identifies the Office applications in which the add-in can be installed. | **Hosts** |  |
 | "getStartedMessages" | Provides information used by the callout that appears when the add-in is installed. | **GetStarted** | |
-| "keyboards" | Defines keyboard shortcuts for the add-in. |  | The current XML manifest has an **ExtendedOverrides** element that references a JSON-formatted file that configures keyboard shortcuts. The "keyboards" property of the JSON manifest replaces that file. Accordingly, the the JSON manifest has nothing equivalent to **ExtendedOverrides**. There is a slight difference in the schema for the old file and the "keyboards" property.|
 | "ribbons" | The ribbons that the add-in customizes. | **Hosts**, **ExtensionPoints**, and various **\*FormFactor** elements | The "ribbons" property is an array of anonymous objects that each merge the purposes of the these three elements. See ["ribbons" and "menus" tables](#ribbons-and-menus-tables).|
-| "contextMenus" | Configures custom context menus. | **ExtensionPoint** (of type ContextMenu) | The "contextMenus" property is an array of anonymous objects. Each of these objects, in turn, has a "menus" array of anonymous objects that define a custom menu. See ["ribbons" and "menus" tables](#ribbons-and-menus-tables). |  |
 | "alternatives" | Specifies backwards compatibility with an equivalent COM add-in, XLL, or both. | **EquivalentAddins** | See the [EquivalentAddins - See also](/javascript/api/manifest/equivalentaddins#see-also) for background information. |
 | "runtimes"  | Configures various kinds of "UI-less" add-ins such as custom functions and functions run directly from custom ribbon buttons. | **Runtimes**. **FunctionFile**, and **ExtensionPoint** (of type CustomFunctions) |  |
 | "autoRunEvents" | Configures an event handler for a specified event. | **Event** and **ExtensionPoint** (of type Events) |  ||
